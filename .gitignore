@@ -4,3 +4,5 @@
 /features
 /steps
 /tests
+configs/__pycache__
+pages/__pycache__
