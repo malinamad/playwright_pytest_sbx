@@ -1,5 +1,6 @@
 from playwright.sync_api import sync_playwright
-from pages.InstancePage import InstancePage
+from configs.config import URL
+from pages import InstancePage
 
 def automate_website():
     with sync_playwright() as playwright:
@@ -8,7 +9,7 @@ def automate_website():
         page = context.new_page()
 
         main_page = InstancePage(page)
-        main_page.navigate_to_website('https://www.google.com/')
+        main_page.navigate_to_website(URL)
         main_page.take_screenshot('screenshots/screenshot.jpg')
 
         context.close()
