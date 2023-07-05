@@ -1,0 +1,6 @@
+/venv
+/screenshots/*
+/.pytest_cache
+/features
+/steps
+/tests
