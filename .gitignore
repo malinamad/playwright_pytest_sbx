@@ -1,8 +1,7 @@
 /venv
-/screenshots/*
+/Results/*
 /.pytest_cache
 /features
 /steps
-/tests
-configs/__pycache__
+utilities/__pycache__
 pages/__pycache__

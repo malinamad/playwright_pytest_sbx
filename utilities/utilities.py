@@ -1,3 +1,11 @@
+from os import getenv
+
+def test_utility():
+    print('Hello World!')
+
+
+run_on = 'local'
+
 ENVIRONMENT = 'production'
 
 if ENVIRONMENT == 'production':
