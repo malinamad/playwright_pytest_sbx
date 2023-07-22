@@ -15,6 +15,8 @@ if ENVIRONMENT == 'production':
 elif ENVIRONMENT == 'development':
     USERNAME = 'development_user'
     PASSWORD = 'development_password'
+elif ENVIRONMENT == 'qa':
+    pass
 else:
     USERNAME = 'default_user'
     PASSWORD = 'default_password'
