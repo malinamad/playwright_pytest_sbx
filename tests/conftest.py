@@ -1,13 +1,27 @@
 import pytest
 from playwright.sync_api import sync_playwright, expect
-from utilities.utilities import test_utility, run_on
 from pages import LoginPage
 
 
+def pytest_addoption(parser):
+    parser.addoption(
+        '--environment',
+        action='store',
+        default='local',
+        help='Environment where the tests should run.'
+    )
+
+
+@pytest.fixture
+def set_environment(request):
+    yield request.config.getoption('--environment')
+
+
 @pytest.fixture(name='browser')
-def playwright_browser():
-    print(run_on)
-    if run_on == 'local':
+def playwright_browser(set_environment):
+    page_envs = {'local', 'QA', 'UAT', 'PROD', 'test'}
+    # print(set_environment)
+    if set_environment in page_envs:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=False)
             yield browser
@@ -21,11 +35,25 @@ def login_page(browser):
 
 
 @pytest.fixture(name='credentials')
-def set_up_env_credentials():
-    if run_on == 'local':
+def set_up_credentials(set_environment):
+    if set_environment == 'local':
         qa_username = 'standard_user'
         qa_password = 'secret_sauce'
         yield qa_username, qa_password
+    elif set_environment == 'QA':
+        qa_username = 'standard_user'
+        qa_password = 'secret_sauce'
+        yield qa_username, qa_password
+    elif set_environment == 'UAT':
+        qa_username = 'standard_user'
+        qa_password = 'secret_sauce'
+        yield qa_username, qa_password
+    elif set_environment == 'PROD':
+        qa_username = 'standard_user'
+        qa_password = 'secret_sauce'
+        yield qa_username, qa_password
+    else:
+        raise Exception(f'Unknown {set_environment} environment.')
 
 # @pytest.fixture
 # def home_page(browser):
