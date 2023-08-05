@@ -1,6 +1,7 @@
 /venv
 /Results/*
 /.pytest_cache
+/.idea
 /features
 /steps
 utilities/__pycache__
