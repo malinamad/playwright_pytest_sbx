@@ -1,15 +1,6 @@
 import pytest
-from pages import LoginPage
-from playwright_pytest_sbx.utilities import utilities
-
-
-
-@pytest.fixture()
-def login_page(browser):
-    page = browser.new_context().new_page()
-    login_page = LoginPage.LoginPage(page)
-    yield login_page
-    page.close()
+from pages import LoginPage, ProductsPage
+from utilities import utilities
 
 
 def test_successful_login_to_the_environment(browser, login_page, credentials) -> None:

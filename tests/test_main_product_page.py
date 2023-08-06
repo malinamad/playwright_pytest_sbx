@@ -1,0 +1,26 @@
+import pytest
+from pages import LoginPage, ProductsPage
+
+
+@pytest.fixture()
+def login_to_the_page(browser, login_page, credentials):
+    username, password = credentials
+    login_page.open_login_page()
+    login_page.login_to_the_environment(username, password)
+    login_page.main_page_is_present()
+    yield login_page
+    
+
+@pytest.fixture()
+def products_page(login_to_the_page):
+    products_page = ProductsPage.ProductsPage(login_to_the_page.page)
+    yield products_page
+    products_page.page.close()
+
+
+def test_add_a_product_to_the_cart(products_page) -> None:
+    products_page.get_all_products()
+    # TODO select random product from the json
+    products_page.select_a_product("Sauce Labs Backpack")
+    products_page.proceed_to_the_cart()
+    products_page.selected_item_in_the_cart_assertion("Sauce Labs Backpack")

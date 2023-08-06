@@ -1,6 +1,5 @@
-from pprint import pprint
-
 from playwright.sync_api import expect
+
 
 class ProductsPage:
     """ The class is created in order to have the related methods of the main page
@@ -11,6 +10,8 @@ class ProductsPage:
     def __init__(self, page):
         self.page = page
         self.products_container = page.locator(".inventory_list")
+        self.shopping_cart = page.locator("#shopping_cart_container")
+        self.product_in_cart = page.locator(".inventory_item_name")
 
     def get_all_products(self) -> None:
         """ Return all the products in list with dictionaries format
@@ -22,45 +23,62 @@ class ProductsPage:
             item_name = item.locator(".inventory_item_name")
             item_price = item.locator(".inventory_item_price")
             item_desc = item.locator(".inventory_item_desc")
+            item_button_id = (item
+                              .locator(".btn_primary")
+                              .get_attribute("id"))
 
-            self.verify_product_is_present_on_page_(item_name, item_price, item_desc)
+            self._verify_product_is_present_on_page(
+                item_name, item_price, item_desc)
 
             self.all_items_list.append({
                 "item_name": item_name.text_content(),
                 "item_price": item_price.text_content(),
                 "item_desc": item_desc.text_content(),
+                "button_id": item_button_id,
             })
 
-    def verify_product_is_present_on_page_(self, *args: str) -> None:
+    def _verify_product_is_present_on_page(self, *args: str) -> None:
         """ Assert a product that should be visible on the page. """
 
         for item in list(args):
             expect(item).to_be_visible()
 
     def select_a_product(self, product_name: str) -> None:
-        if self.verify_the_product_is_in_list_(product_name):
-            # TODO get button attribute/locator, then have it clicked
-            self.page.locator("")
+        """ Select a product if it is present on the main page, otherwise raise an exception. """
+
+        if self._verify_the_product_is_in_list(product_name):
+            button_id = self._get_product_id(product_name)
+            button_id_loc = self.page.locator(f"#{button_id}")
+            button_id_loc.click()
         else:
             raise NameError("The provided product is not present on the actual items list.")
 
-    def verify_the_product_is_in_list_(self, product_name: str) -> bool:
+    def _verify_the_product_is_in_list(self, product_name: str) -> bool:
+        """ Return bool value indicating whether the provided product is present on the main page by looping
+        through the retrieved data from the main page.
+
+        Note: the product name is taken from the json file as test data. """
+
         for item in self.all_items_list:
             if item["item_name"] == product_name:
                 return True
         return False
 
+    def _get_product_id(self, product_name: str) -> str:
+        """ Return button id locator by looping through the retrieved data from the main page
+        of a requested product. """
 
+        for item in self.all_items_list:
+            if item["item_name"] == product_name:
+                return item["button_id"]
 
-    # def compare_products_between_expected_and_actual(
-    #         self,
-    #         expected_items: list,
-    #         actual_items: list
-    # ):
-    #     for expected_item in expected_items:
-    #         expect.
+    def proceed_to_the_cart(self) -> None:
+        self.shopping_cart.click()
 
-# def save_elements_to_file(self, text):
-#     for item in text:
-#         with open('file.txt', 'w+') as f:
-#             f.write(item + '\n')
+    def selected_item_in_the_cart_assertion(self, products_name: str) -> None:
+        expect(self.product_in_cart).to_be_visible()
+        expect(self.product_in_cart).to_contain_text(products_name)
+
+    def get_list_of_all_added_products(self):
+        # TODO: in case there is more than one item in the cart, retrieve list with all of them
+        pass

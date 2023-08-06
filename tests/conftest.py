@@ -1,5 +1,6 @@
 import pytest
 from playwright.sync_api import sync_playwright, expect
+from pages import LoginPage
 # from utilities.utilities import test_utility, run_on
 
 
@@ -27,6 +28,12 @@ def playwright_browser(set_environment):
             yield browser
             # browser.close()
 
+@pytest.fixture()
+def login_page(browser):
+    page = browser.new_context().new_page()
+    login_page = LoginPage.LoginPage(page)
+    yield login_page
+    page.close()
 
 @pytest.fixture(name='credentials')
 def set_up_credentials(set_environment):
