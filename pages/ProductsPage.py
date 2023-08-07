@@ -12,6 +12,7 @@ class ProductsPage:
         self.products_container = page.locator(".inventory_list")
         self.shopping_cart = page.locator("#shopping_cart_container")
         self.product_in_cart = page.locator(".inventory_item_name")
+        self.shopping_cart_badge = page.locator(".shopping_cart_badge")
 
     def get_all_products(self) -> None:
         """ Return all the products in list with dictionaries format
@@ -75,10 +76,17 @@ class ProductsPage:
     def proceed_to_the_cart(self) -> None:
         self.shopping_cart.click()
 
+    def item_count_on_shopping_cart_badge_assertion(self, products_amount: int) -> None:
+        """ Assert whether the amount of products is displayed in accordance with the added amount. """
+        expect(self.shopping_cart_badge).to_be_visible()
+        expect(self.shopping_cart_badge).to_have_text(str(products_amount))
+
+    # TODO checkout related, to refactor
     def selected_item_in_the_cart_assertion(self, products_name: str) -> None:
         expect(self.product_in_cart).to_be_visible()
         expect(self.product_in_cart).to_contain_text(products_name)
 
+    # TODO checkout related, to refactor
     def get_list_of_all_added_products(self):
         # TODO: in case there is more than one item in the cart, retrieve list with all of them
         pass
