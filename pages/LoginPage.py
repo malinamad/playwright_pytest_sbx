@@ -1,10 +1,10 @@
-from playwright.sync_api import expect
+from playwright.sync_api import expect, Page
 
 
 class LoginPage:
     web_login = 'https://www.saucedemo.com/'
 
-    def __init__(self, page):
+    def __init__(self, page: Page):
         self.page = page
         self.login_input_field = page.locator("[data-test=\"username\"]")
         self.password_input_field = page.locator("[data-test=\"password\"]")
