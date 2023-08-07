@@ -1,4 +1,5 @@
 import pytest
+from pages import LoginPage
 from playwright.sync_api import sync_playwright, expect
 # from utilities.utilities import test_utility, run_on
 
@@ -17,7 +18,7 @@ def set_environment(request):
     yield request.config.getoption('--environment')
 
 
-@pytest.fixture(name='browser')
+@pytest.fixture(scope="function", name='browser')
 def playwright_browser(set_environment):
     page_envs = {'local', 'QA', 'UAT', 'PROD', 'test'}
     # print(set_environment)
@@ -49,24 +50,8 @@ def set_up_credentials(set_environment):
     else:
         raise Exception(f'Unknown {set_environment} environment.')
 
-# @pytest.fixture
-# def home_page(browser):
-#     page = browser.new_context().new_page()
-#     home_page = homepage.HomePage(page)
-#     yield home_page
-#
-#
-# @pytest.fixture
-# def product_page(browser):
-#     page = browser.new_context().new_page()
-#     product_page = productpage.ProductPage(page)
-#     yield product_page
-
-# username = 'standard_user'
-# password = 'secret_sauce'
-#
-#
-# def test_automate_website(browser, login_page):
-#     login_page.open_login_page()
-#     login_page.login_to_the_environment(username, password)
-#     browser.close()
+@pytest.fixture(scope="function")
+def login_page(browser):
+    page = browser.new_context().new_page()
+    login_page = LoginPage.LoginPage(page)
+    yield login_page
