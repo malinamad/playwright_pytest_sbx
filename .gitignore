@@ -3,5 +3,10 @@
 /.pytest_cache
 /features
 /steps
+
 utilities/__pycache__
 pages/__pycache__
+
+tests/test_steps/__pycache__
+tests/features/__pycache__
+tests/__pycache__
