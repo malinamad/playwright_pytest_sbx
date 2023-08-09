@@ -3,6 +3,7 @@
 /.pytest_cache
 /features
 /steps
+/.idea
 
 utilities/__pycache__
 pages/__pycache__
