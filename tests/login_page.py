@@ -3,7 +3,6 @@ from pages import LoginPage
 from playwright_pytest_sbx.utilities import utilities
 
 
-
 @pytest.fixture()
 def login_page(browser):
     page = browser.new_context().new_page()
