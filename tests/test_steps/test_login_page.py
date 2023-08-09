@@ -1,30 +1,29 @@
 import pytest
 from pages import LoginPage
-from pytest_bdd import scenarios, given, when, then
+from pytest_bdd import scenario, given, when, then
 
 
-# scenarios("../features/login_page.feature")
-
-
-@pytest.fixture()
+@pytest.fixture(scope="class")
 def step_context():
     return {
         "username": "",
         "password": ""
     }
 
+@scenario("../features/login_page.feature", "Login To The Store Page")
+def test_login_to_the_page():
+    pass
+
 
 @given("I'm A Standard User")
-def test_standard_user(credentials, step_context):
+def standard_user(credentials, step_context):
     username, password = credentials
     step_context["username"] = username
     step_context["password"] = password
 
 
 @when("I Am On The Login Page")
-def test_user_is_on_login_page(page, step_context, context):
-    page = context.new_page()
-    login_page = LoginPage.LoginPage(page)
+def user_is_on_login_page(step_context, login_page):
     login_page.open_login_page()
     login_page.login_to_the_environment(
         step_context["username"], step_context["password"]
@@ -32,6 +31,5 @@ def test_user_is_on_login_page(page, step_context, context):
 
 
 @then("I Should Be Able To Login With My Credentials")
-def test_products_page_is_displayed(page):
-    login_page = LoginPage.LoginPage(page)
+def products_page_is_displayed(login_page):
     login_page.main_page_is_present()

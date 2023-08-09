@@ -1,4 +1,4 @@
-@test
+@login_page
 Feature: Login Page
     As a user,
     I want to login to the store page,

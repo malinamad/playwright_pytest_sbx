@@ -13,23 +13,21 @@ def pytest_addoption(parser):
     )
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def set_environment(request):
     yield request.config.getoption('--environment')
 
 
-# @pytest.fixture(scope="function", name='browser')
-# def playwright_browser(set_environment):
-#     page_envs = {'local', 'QA', 'UAT', 'PROD', 'test'}
-#     # print(set_environment)
-#     if set_environment in page_envs:
-#         with sync_playwright() as playwright:
-#             browser = playwright.chromium.launch(headless=False)
-#             yield browser
-            # browser.close()
+@pytest.fixture(scope="module", name='browser')
+def playwright_browser(set_environment):
+    page_envs = {'local', 'QA', 'UAT', 'PROD', 'test'}
+    if set_environment in page_envs:
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch(headless=False)
+            yield browser
 
 
-@pytest.fixture(name='credentials')
+@pytest.fixture(scope="module", name='credentials')
 def set_up_credentials(set_environment):
     if set_environment == 'local':
         qa_username = 'standard_user'
@@ -50,8 +48,9 @@ def set_up_credentials(set_environment):
     else:
         raise Exception(f'Unknown {set_environment} environment.')
 
-# @pytest.fixture(scope="function")
-# def login_page(browser):
-#     page = browser.new_context().new_page()
-#     login_page = LoginPage.LoginPage(page)
-#     yield login_page
+
+@pytest.fixture(scope="class")
+def login_page(browser):
+    page = browser.new_context().new_page()
+    login_page = LoginPage.LoginPage(page)
+    yield login_page

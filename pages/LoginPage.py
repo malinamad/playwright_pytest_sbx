@@ -1,10 +1,10 @@
-from playwright.sync_api import expect, Page
+from playwright.sync_api import expect
 
 
 class LoginPage:
     web_login = 'https://www.saucedemo.com/'
 
-    def __init__(self, page: Page):
+    def __init__(self, page):
         self.page = page
         self.login_input_field = page.locator("[data-test=\"username\"]")
         self.password_input_field = page.locator("[data-test=\"password\"]")
@@ -13,7 +13,7 @@ class LoginPage:
         self.error_message = page.locator("[data-test=\"error\"]")
 
     def open_login_page(self):
-        self.page.goto('https://www.saucedemo.com/')
+        self.page.goto(self.web_login)
 
     def login_to_the_environment(self, login, password):
         self.login_input_field.fill(login)
@@ -27,4 +27,5 @@ class LoginPage:
         expect(self.error_message).to_be_visible()
         expect(
             self.error_message
-        ).to_contain_text("Epic sadface: Username and password do not match any user in this service")
+        ).to_contain_text("Epic sadface: Username and password "
+                          "do not match any user in this service")
