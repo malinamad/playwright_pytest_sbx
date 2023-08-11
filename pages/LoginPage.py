@@ -2,7 +2,8 @@ from playwright.sync_api import expect
 
 
 class LoginPage:
-    web_login = 'https://www.saucedemo.com/'
+    # add to env setup
+    env_url = 'https://www.saucedemo.com/'
 
     def __init__(self, page):
         self.page = page
@@ -13,7 +14,7 @@ class LoginPage:
         self.error_message = page.locator("[data-test=\"error\"]")
 
     def open_login_page(self):
-        self.page.goto(self.web_login)
+        self.page.goto(self.env_url)
 
     def login_to_the_environment(self, login, password):
         self.login_input_field.fill(login)
