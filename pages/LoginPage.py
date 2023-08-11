@@ -28,4 +28,5 @@ class LoginPage:
         expect(self.error_message).to_be_visible()
         expect(
             self.error_message
-        ).to_contain_text("Epic sadface: Username and password do not match any user in this service")
+        ).to_contain_text("Epic sadface: Username and password "
+                          "do not match any user in this service")

@@ -1,6 +1,6 @@
 import pytest
-from pages import LoginPage, ProductsPage
-from utilities import utilities
+from pages import LoginPage
+from playwright_pytest_sbx.utilities import utilities
 
 
 def test_successful_login_to_the_environment(browser, login_page, credentials) -> None:
