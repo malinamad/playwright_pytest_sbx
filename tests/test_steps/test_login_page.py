@@ -1,5 +1,4 @@
 import pytest
-from pages import LoginPage
 from pytest_bdd import scenario, given, when, then
 
 
@@ -10,8 +9,10 @@ def step_context():
         "password": ""
     }
 
+
 @scenario("../features/login_page.feature", "Login To The Store Page")
 def test_login_to_the_page():
+    # used for integration with bdd
     pass
 
 

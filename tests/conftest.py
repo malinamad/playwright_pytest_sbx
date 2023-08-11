@@ -1,8 +1,6 @@
 import pytest
-from pages import LoginPage
-from playwright.sync_api import sync_playwright, expect
-from pages import LoginPage
-# from utilities.utilities import test_utility, run_on
+from playwright.sync_api import sync_playwright
+from playwright_pytest_sbx.pages import LoginPage
 
 
 def pytest_addoption(parser):
@@ -27,6 +25,7 @@ def playwright_browser(set_environment):
             browser = playwright.chromium.launch(headless=False)
             yield browser
 
+
 @pytest.fixture()
 def login_page(browser):
     page = browser.new_context().new_page()
@@ -34,26 +33,27 @@ def login_page(browser):
     yield login_page
     page.close()
 
+
 @pytest.fixture(scope="module", name='credentials')
 def set_up_credentials(set_environment):
     if set_environment == 'local':
-        qa_username = 'standard_user'
-        qa_password = 'secret_sauce'
-        yield qa_username, qa_password
+        username = 'standard_user'
+        password = 'secret_sauce'
+        yield username, password
     elif set_environment == 'QA':
         qa_username = 'standard_user'
         qa_password = 'secret_sauce'
         yield qa_username, qa_password
     elif set_environment == 'UAT':
-        qa_username = 'standard_user'
-        qa_password = 'secret_sauce'
-        yield qa_username, qa_password
+        uat_username = 'standard_user'
+        uat_password = 'secret_sauce'
+        yield uat_username, uat_password
     elif set_environment == 'PROD':
-        qa_username = 'standard_user'
-        qa_password = 'secret_sauce'
-        yield qa_username, qa_password
+        prod_username = 'standard_user'
+        prod_password = 'secret_sauce'
+        yield prod_username, prod_password
     else:
-        raise Exception(f'Unknown {set_environment} environment.')
+        raise NameError(f'Unknown {set_environment} environment.')
 
 
 @pytest.fixture(scope="class")

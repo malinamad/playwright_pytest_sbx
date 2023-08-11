@@ -1,3 +1,5 @@
+""" Class created as page object model of login page. """
+
 from playwright.sync_api import expect
 
 

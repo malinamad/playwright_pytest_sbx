@@ -1,5 +1,5 @@
 import pytest
-from pages import LoginPage, ProductsPage
+from playwright_pytest_sbx.pages import ProductsPage
 
 
 @pytest.fixture()
@@ -24,6 +24,7 @@ def test_add_a_product_to_the_cart(products_page) -> None:
     products_page.add_a_product_from_main_page("Sauce Labs Backpack")
     products_page.proceed_to_the_cart()
     products_page.selected_item_in_the_cart_assertion("Sauce Labs Backpack")
+
 
 def test_shopping_badge_count_verification(products_page) -> None:
     products_page.get_all_products()
