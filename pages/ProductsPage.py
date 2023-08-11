@@ -37,7 +37,7 @@ class ProductsPage:
                 "item_name": item_name.text_content(),
                 "item_price": item_price.text_content(),
                 "item_desc": item_desc.text_content(),
-                "button_id": item_button_id,
+                "btn_id": item_button_id,
             })
 
     @staticmethod
@@ -47,12 +47,24 @@ class ProductsPage:
         for item in list(args):
             expect(item).to_be_visible()
 
-    def select_a_product(self, product_name: str) -> None:
+    def add_a_product_from_main_page(self, product_name: str) -> None:
         """ Select a product if it is present on the main page,
         otherwise raise an exception. """
 
         if self._verify_the_product_is_in_list(product_name):
             button_id = self._get_product_id(product_name)
+            button_id_loc = self.page.locator(f"#{button_id}")
+            button_id_loc.click()
+            self._get_remove_button_id(product_name)  # takes rmv btn id
+        else:
+            raise NameError(self.missing_product_err_msg)
+
+    def remove_a_product_on_main_page(self, product_name: str):
+        """ Remove a product selected on the main page, if the product is not
+        present raise an exception. """
+
+        if self._verify_the_product_is_in_list(product_name):
+            button_id = self._get_product_id(product_name, "remove")
             button_id_loc = self.page.locator(f"#{button_id}")
             button_id_loc.click()
         else:
@@ -70,14 +82,32 @@ class ProductsPage:
                 return True
         return False
 
-    def _get_product_id(self, product_name: str) -> str:
+    def _get_product_id(self, product_name: str, action="add") -> str:
         """ Return button id locator by looping through the retrieved data from
         the main page of a requested product. """
 
         for item in self.all_items_list:
-            if item["item_name"] == product_name:
-                return item["button_id"]
+            if (item["item_name"] == product_name
+                    and action == "add"):
+                return item["btn_id"]
+            elif (item["item_name"] == product_name
+                    and action == "remove"):
+                return item["remove_btn_id"]
 
+    def _get_remove_button_id(self, product_name: str) -> None:
+        """ Update the product dictionary with remove button ID, that can be
+        collected only after adding a product to the cart. """
+
+        remove_btn_id = self.page.get_by_text("Remove").get_attribute("id")
+
+        for item in self.all_items_list:
+            if item["item_name"] == product_name:
+                item_index = self.all_items_list.index(item)
+                self.all_items_list[item_index]["remove_btn_id"] = \
+                    remove_btn_id
+                break
+
+    # create navigation class?
     def proceed_to_the_cart(self) -> None:
         self.shopping_cart.click()
 
