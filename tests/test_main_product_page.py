@@ -1,5 +1,5 @@
 import pytest
-from playwright_pytest_sbx.pages import ProductsPage
+from pages import ProductsPage
 
 
 @pytest.fixture()

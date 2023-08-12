@@ -1,6 +1,6 @@
 import pytest
 from playwright.sync_api import sync_playwright
-from playwright_pytest_sbx.pages import LoginPage
+from pages import LoginPage
 
 
 def pytest_addoption(parser):

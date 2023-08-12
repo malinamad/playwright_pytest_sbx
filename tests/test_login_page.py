@@ -1,4 +1,4 @@
-from playwright_pytest_sbx.utilities import utilities
+from utilities import utilities
 
 
 def test_successful_login_to_the_environment(
