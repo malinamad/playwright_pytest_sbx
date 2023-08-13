@@ -1,5 +1,6 @@
 [MASTER]
 init-hook='import sys; sys.path.append(".")'
+load-plugins=pylint_pytest
 
 [MAIN]
 
@@ -432,7 +433,11 @@ disable=raw-checker-failed,
         useless-suppression,
         deprecated-pragma,
         use-symbolic-message-instead,
-        W
+        too-few-public-methods,
+        missing-function-docstring,
+        missing-class-docstring,
+        missing-module-docstring,
+        fixme
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option

@@ -84,7 +84,7 @@ class ProductsPage:
                 return True
         return False
 
-    def _get_product_id(self, product_name: str, action="add") -> str:
+    def _get_product_id(self, product_name: str, action="add") -> str | None:
         """ Return button id locator by looping through the retrieved data from
         the main page of a requested product. """
 
@@ -92,9 +92,10 @@ class ProductsPage:
             if (item["item_name"] == product_name
                     and action == "add"):
                 return item["btn_id"]
-            elif (item["item_name"] == product_name
+            if (item["item_name"] == product_name
                     and action == "remove"):
                 return item["remove_btn_id"]
+        return None
 
     def _get_remove_button_id(self, product_name: str) -> None:
         """ Update the product dictionary with remove button ID, that can be

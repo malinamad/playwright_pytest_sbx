@@ -1,6 +1,6 @@
 import pytest
 from playwright.sync_api import sync_playwright
-from pages import LoginPage
+from pages.login_page import LoginPage
 
 
 def pytest_addoption(parser):
@@ -26,11 +26,11 @@ def playwright_browser(set_environment):
             yield browser
 
 
-@pytest.fixture()
+@pytest.fixture(scope="class")
 def login_page(browser):
     page = browser.new_context().new_page()
-    login_page = LoginPage.LoginPage(page)
-    yield login_page
+    login_page_instance = LoginPage(page)
+    yield login_page_instance
     page.close()
 
 
@@ -54,10 +54,3 @@ def set_up_credentials(set_environment):
         yield prod_username, prod_password
     else:
         raise NameError(f'Unknown {set_environment} environment.')
-
-
-@pytest.fixture(scope="class")
-def login_page(browser):
-    page = browser.new_context().new_page()
-    login_page = LoginPage.LoginPage(page)
-    yield login_page
