@@ -1,3 +1,6 @@
+""" Class created as page object model of checkout page. """
+
+
 class CheckoutPage:
 
     def __init__(self, page):
