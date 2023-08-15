@@ -1,3 +1,4 @@
+"""Suite with Products related tests."""
 import pytest
 from pages.products_page import ProductsPage
 from pytest_bdd import scenarios, given, when, then, parsers
@@ -42,8 +43,9 @@ def verify_that_the_added_product_is_in_the_cart(
     products_page.selected_item_in_the_cart_assertion(product_name)
     products_page.page.pause()
 
-# def test_shopping_badge_count_verification(products_page) -> None:
-#     products_page.get_all_products()
-#     # TODO select random product from the json
-#     products_page.add_a_product_from_main_page("Sauce Labs Backpack")
-#     products_page.item_count_on_shopping_cart_badge_assertion(1)
+
+@then("The Count On The Cart Is Reflected With The Added Product")
+def verify_that_the_product_count_is_updated(
+        products_page
+) -> None:
+    products_page.item_count_on_shopping_cart_badge_assertion(1)
